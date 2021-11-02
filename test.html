@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>GrapesJS Plugin</title>
+    <link
+      href="https://unpkg.com/grapesjs/dist/css/grapes.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://unpkg.com/grapesjs"></script>
+    <script src="dist/grapesjs-blocks-basic.min.js"></script>
+    <style>
+      body,
+      html {
+        height: 100%;
+        margin: 0;
+      }
+
+      .gjs-block-svg {
+        width: 61%;
+      }
+
+      .gjs-block-svg-path {
+        fill: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="gjs" style="height:0px; overflow:hidden"></div>
+  <div class="blocksection"></div>
+  <div style="display: none;">
+    <div id="style-manager" class="column" style="flex-basis: 500px">
+      Style Manager here
+      <br>
+      <div id="selectors-container"></div>
+      <div id="traits-container"></div>
+      <div id="style-manager-container"></div>
+    </div>
+  </div>
+  
+    <script type="text/javascript">
+      var editor = grapesjs.init({
+        height: '100%',
+        noticeOnUnload: 0,
+        storageManager: { autoload: 0 },
+        container: '#gjs',
+        fromElement: true,
+        plugins: ['gjs-blocks-basic'],
+        // blockManager: {
+        //   appendTo: '.blocksection'
+        // },
+        pluginsOpts: {
+          'gjs-blocks-basic': {
+            // blocks: ['column1', 'column2']
+          }
+        },
+        styleManager: {
+          appendTo: '#style-manager-container',
+          sectors: [{
+            name: 'General',
+            open: false,
+            buildProps: ['float', 'display', 'position', 'top', 'right', 'left', 'bottom']
+          },{
+            name: 'Dimension',
+            open: false,
+            buildProps: [ 'width', 'height', 'max-width', 'min-height', 'margin', 'padding']
+          },{
+            name: 'Typography',
+            open: false,
+            buildProps: ['font-family', 'font-size', 'font-weight', 'letter-spacing', 'color', 'line-height', 'text-align', 'text-shadow']
+          },{
+            name: 'Decorations',
+            open: false,
+            buildProps: ['border-radius-c', 'background-color', 'border-radius', 'border', 'box-shadow', 'background'],
+          },{
+            name: 'Extra',
+            open: false,
+            buildProps: ['opacity', 'transition', 'perspective', 'transform'],
+            properties: [{
+              type: 'slider',
+              property: 'opacity',
+              defaults: 1,
+              step: 0.01,
+              max: 1,
+              min:0,
+            }]
+          }],
+        },
+          selectorManager: {
+            appendTo: '#selectors-container',
+          },
+          traitManager: {
+            appendTo: '#traits-container',
+          }
+        });
+
+      window.editor = editor;
+      const modal = editor.Modal;
+
+      
+      editor.Commands.add('tlb-vid-settings', {
+
+        
+        run(editor, sender) {
+          //alert('Hello world!');
+          const el = document.getElementById('style-manager');
+          modal.setContent(el);
+          modal.open({
+            title: 'Settings',
+            attributes: { class: 'my-class', id: 'settings-modal' },
+          });
+        }
+      });
+
+      // add settings in toolbar to component
+      
+    </script>
+
+    <style>
+      #settings-modal .style-manager {
+        display: block !important;
+      }
+    </style>
+  </body>
+</html>
